@@ -1,0 +1,8 @@
+python==3.6.0
+tensorflow==1.15.0
+cuda==10.0.130
+cudnn==7.6.0
+opencv-python
+tqdm
+numpy
+streamlit
