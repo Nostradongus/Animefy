@@ -4,6 +4,16 @@ from PIL import Image
 # style.py
 import style 
 
+# remove "Made with Streamlit" footer text
+# uncomment "#MainMenu {visibility: hidden;}" to also remove the default Streamlit hamburger menu
+hide_streamlit = """
+<style>
+// #MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style>
+"""
+st.markdown(hide_streamlit, unsafe_allow_html=True) 
+
 # page title
 st.title('AnimeGANv2: Implementation Test')
 
