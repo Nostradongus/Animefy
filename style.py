@@ -1,11 +1,13 @@
 import os
 import tensorflow.compat.v1 as tf
 import numpy as np
-from AnimeGANv2.net import generator
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 # utils.py
 from utils import *
+
+# generator.py
+import generator
 
 # stylize input image with chosen anime style
 def stylize(anime_style, input_image): 
