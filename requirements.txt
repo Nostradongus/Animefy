@@ -2,7 +2,6 @@ tensorflow
 opencv-python
 tqdm
 numpy
-streamlit
 torch
 torchvision
 torchaudio
