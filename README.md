@@ -20,7 +20,7 @@ Web application implementation of [AnimeGANv2](https://github.com/TachibanaYoshi
 * tqdm
 * numpy
 
-### Local Usage
+### Local Usage:
 ###### 1) Create an environment using `pip-env` or anaconda (`conda`) to avoid version conflicts with other projects.
 ###### 2) Install dependencies
 `pip install -r requirements.txt` 
