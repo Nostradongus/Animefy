@@ -11,7 +11,7 @@ Web application implementation of [AnimeGANv2](https://github.com/TachibanaYoshi
 
 ### Requirements:
 
-* python 3.6
+* python 3.7 or lower
 * streamlit
 * tensorflow 1.15.0
 * cuda 10.0.130
