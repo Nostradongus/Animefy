@@ -1,11 +1,20 @@
 import numpy as np
 import cv2
+from PIL import Image
 
-def read_img(image_path):
-    img = cv2.imread(image_path)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+# def read_img(image_path):
+#     img = cv2.imread(image_path)
+#     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+#     assert len(img.shape)==3
+#     return img
+
+def read_img(image_file_buffer):
+    img = Image.open(image_file_buffer).convert('RGB')
+    img = np.array(img)
     assert len(img.shape)==3
     return img
+
 
 # Calculates the average brightness in the specified irregular image
 def calculate_average_brightness(img):

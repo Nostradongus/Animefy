@@ -1,7 +1,7 @@
 import os
 import tensorflow.compat.v1 as tf
 import numpy as np
-os.environ["CUDA_VISIBLE_DEVICES"] = "0" # run on CPU
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 # utils.py
 from utils import *
