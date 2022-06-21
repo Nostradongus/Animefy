@@ -13,11 +13,8 @@ Web application implementation of [AnimeGANv2](https://github.com/TachibanaYoshi
 
 * python 3.7 or lower
 * streamlit
-* tensorflow 1.15.0
-* cuda 10.0.130
-* cudnn 7.6.0
+* tensorflow 1.x.x
 * opencv
-* tqdm
 * numpy
 
 ### Local Usage:
