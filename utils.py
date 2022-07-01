@@ -2,6 +2,7 @@ import tensorflow.compat.v1 as tf
 from adjust_brightness import adjust_brightness_from_src_to_dst, read_img
 import cv2
 import numpy as np
+from PIL import Image
 
 def load_input_image(image_path, size=[256,256]):
     img = cv2.imread(image_path).astype(np.float32)
@@ -9,6 +10,14 @@ def load_input_image(image_path, size=[256,256]):
     img = preprocessing(img,size)
     img = np.expand_dims(img, axis=0)
     return img
+
+""" FOR WEB APP ONLY, WHEN DEPLOYED """
+# def load_input_image(image_file_buffer, size=[256, 256]):
+#     img = Image.open(image_file_buffer).convert('RGB')
+#     img = np.array(img).astype(np.float32)
+#     img = preprocessing(img, size)
+#     img = np.expand_dims(img, axis=0)
+#     return img
 
 def preprocessing(img, size):
     h, w = img.shape[:2]
@@ -35,5 +44,5 @@ def inverse_transform(images):
     images = np.clip(images, 0, 255)
     return images.astype(np.uint8)
 
-def imsave(images, path):
-    return cv2.imwrite(path, cv2.cvtColor(images, cv2.COLOR_BGR2RGB))
+# def imsave(images, path):
+#     return cv2.imwrite(path, cv2.cvtColor(images, cv2.COLOR_BGR2RGB))
