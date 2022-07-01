@@ -1,6 +1,8 @@
-tensorflow==1.15.0
-cuda==10.0.130
-cudnn==7.6.0
-opencv-python
+streamlit
+tensorflow==1.15
+opencv-python-headless
 tqdm
 numpy
+torch
+torchvision
+torchaudio

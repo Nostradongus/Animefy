@@ -11,18 +11,17 @@ Web application implementation of [AnimeGANv2](https://github.com/TachibanaYoshi
 
 ### Requirements:
 
-* python 3.6
+* python 3.7 or lower
 * streamlit
-* tensorflow 1.15.0
-* cuda 10.0.130
-* cudnn 7.6.0
+* tensorflow 1.x.x
 * opencv
-* tqdm
 * numpy
 
-### Usage
-###### 1) Create an environment using `pip-env` or anaconda (`conda`) to avoid version conflicts with other projects.
+### Local Usage:
+###### 1) Create an environment through your terminal using `pip-env` or anaconda (`conda`) to avoid version conflicts with your other projects.
 ###### 2) Install dependencies
 `pip install -r requirements.txt` 
-###### 3) Run web application
+###### 3) Install streamlit
+`pip install streamlit`
+###### 4) Run web application
 `streamlit run app.py`
