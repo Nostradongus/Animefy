@@ -15,7 +15,6 @@ def read_img(image_file_buffer):
     assert len(img.shape)==3
     return img
 
-
 # Calculates the average brightness in the specified irregular image
 def calculate_average_brightness(img):
     # Average value of three color channels

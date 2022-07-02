@@ -18,7 +18,6 @@ def load_input_image(image_file_buffer, size=[256, 256]):
     img = np.expand_dims(img, axis=0)
     return img
 
-
 def preprocessing(img, size):
     h, w = img.shape[:2]
     if h <= size[0]:
@@ -44,5 +43,5 @@ def inverse_transform(images):
     images = np.clip(images, 0, 255)
     return images.astype(np.uint8)
 
-def imsave(images, path):
-    return cv2.imwrite(path, cv2.cvtColor(images, cv2.COLOR_BGR2RGB))
+# def imsave(images, path):
+#     return cv2.imwrite(path, cv2.cvtColor(images, cv2.COLOR_BGR2RGB))

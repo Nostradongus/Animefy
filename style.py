@@ -27,7 +27,7 @@ def stylize(anime_style, input_image):
         ckpt_name = os.path.basename(ckpt.model_checkpoint_path)
         saver.restore(sess, os.path.join(checkpoint_dir, ckpt_name))
         
-        # load and preprocess input image
+        # load and preprocess input image as a NumPy array
         image = np.asarray(load_input_image(input_image))
         
         # stylize image
