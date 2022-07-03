@@ -128,35 +128,43 @@ if uploaded_image is not None:
         st.markdown("""
             Here's a before and after!
         """)
+
+        # prepare output image for downloading
+        imageRGB = cv.cvtColor(output_image, cv.COLOR_BGR2RGB)
+        img_encode = cv.imencode('.jpg', imageRGB)[1]
+        data_encode = np.array(img_encode)
+        byte_encode = data_encode.tobytes()
+
         before_col, after_col = st.columns(2)
         with before_col:
             # clamp and channels are used since OpenCV was used in processing the image
             st.image(uploaded_image, clamp=True, channels='RGB')
+
         with after_col:
             # clamp and channels are used since OpenCV was used in processing the image
             st.image(output_image, clamp=True, channels='RGB')
 
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+            pass
+        with col2:
+            # retry message
+            # st.markdown('Not satisfied? Click this to retry!')
+            # retry button
+            retry_btn = st.button("Try another image")
+
+            if retry_btn:
+                page_container.empty()
+        with col3:
+            # some instruction for downloading
+            # st.write("Finally, just download your _anime-fied_ image!")
+            # download button
+            st.download_button('Download Image', byte_encode, 'output.jpg', 'jpg')
+        with col4:
+            pass
+
         st.write("---")
-
-        # prepare output image for downloading
-        img_encode = cv.imencode('.jpg', output_image)[1]
-        data_encode = np.array(img_encode)
-        byte_encode = data_encode.tobytes()
-
-        # some instruction for downloading
-        st.write("Finally, just click this to download your _anime-fied_ image!")
-        # download button
-        st.download_button('Download Image', byte_encode, 'output.jpg', 'jpg')
-
-        st.write("---")
-
-        # retry message
-        st.markdown('Not satisfied? Click this to retry!')
-        # retry button
-        retry_btn = st.button("Retry!")
         
         # randomizer. just another workaround.
         st.session_state['uploader_key'] = str(randint(1000, 100000000))
-
-        if retry_btn:
-            page_container.empty()
