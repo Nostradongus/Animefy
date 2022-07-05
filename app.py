@@ -66,6 +66,10 @@ hide_streamlit = """
         background-image: url("https://drive.google.com/uc?export=view&id=1HbgExEyTd8r6kWhe7JYgihnsXXtZ0Lmm");
         background-size: cover;
     }
+
+    div, p, ul, li, span, .streamlit-expanderHeader {
+        font-family: "Times New Roman", serif; !important
+    }
 </style>
 """
 st.markdown(hide_streamlit, unsafe_allow_html=True)
@@ -182,9 +186,9 @@ if isValidImage:
             ### Step #3: Download your image!
         """)
 
-        # display original and output images
+        # display original image
         st.markdown("""
-            Here's a before and after!
+            Here's your image **before**...
         """)
 
         # prepare output image for downloading
@@ -193,14 +197,28 @@ if isValidImage:
         data_encode = np.array(img_encode)
         byte_encode = data_encode.tobytes()
 
-        before_col, after_col = st.columns(2)
-        with before_col:
+        # before_col, after_col = st.columns(2)
+        # with before_col:
             # clamp and channels are used since OpenCV was used in processing the image
-            st.image(uploaded_image, clamp=True, channels='RGB')
+        st.image(uploaded_image, clamp=True, channels='RGB')
 
-        with after_col:
+        # display original and output images
+        st.markdown("""
+            And here's your image **after**!
+        """)
+
+        # with after_col:
             # clamp and channels are used since OpenCV was used in processing the image
-            st.image(output_image, clamp=True, channels='RGB')
+        st.image(output_image, clamp=True, channels='RGB')
+
+        st.write("---")
+
+        st.markdown("""
+            Finally, you can download your anime-fied image here! (Or try other images and styles 😉)
+        """)
+        st.markdown("""
+            \
+        """)
 
         col1, col2, col3, col4 = st.columns([1, 3, 3, 3])
 
@@ -218,4 +236,4 @@ if isValidImage:
             # download button
             st.download_button('Download Image', byte_encode, 'output.jpg', 'jpg')
 
-        st.write("---")
+        # st.write("---")
