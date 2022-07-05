@@ -8,6 +8,9 @@ import threading
 # style.py
 import style
 
+# utils.py
+from utils import *
+
 st.set_page_config(page_title="Animefy", page_icon="images/animefy_logo.png")
 
 model_lock = threading.Lock()
@@ -28,6 +31,17 @@ hide_streamlit = """
 </style>
 """
 st.markdown(hide_streamlit, unsafe_allow_html=True)
+
+def imageResCheck (image):
+    # load and preprocess input image as a NumPy array
+    image = np.asarray(load_input_image(image))
+
+    image_height, image_width = image.shape[:2]
+
+    if (image_height <= 2160 and image_width < 2160):
+        return True
+    else:
+        return False
 
 # randomizer. a workaround for clearing the contents of the file_uploader
 if 'uploader_key' not in st.session_state:
@@ -58,8 +72,7 @@ with home_page.expander("📣 Here are some things to take note of...", expanded
     st.write("""    
         * Do note that AnimeGAN works best with images containing **sceneries without people**. 
         * For best results, use images that **do not** contain human subjects.
-        * Due to server hardware limitations, only upload images with **at most** a resolution of **1980x1080**.
-        * Fore more information on AnimeGAN, click [here](https://github.com/TonyLianLong/AnimeGAN.js).
+        * Fore more information on AnimeGAN, click [here](https://github.com/TachibanaYoshino/AnimeGAN).
     """)
 
 # upload image functionality
@@ -67,8 +80,19 @@ uploaded_image = home_page.file_uploader(
         "If you're ready, you can now upload your image here:", type=['png','jpg','jpeg'], key=st.session_state['uploader_key']
     )
 
-# if there is an uploaded image, show next steps
+# some checking if the image resolution is valid
+# being done only for performance purposes.
 if uploaded_image is not None:
+    isValidImage = imageResCheck(uploaded_image)
+else:
+    isValidImage = False
+
+# warning
+if uploaded_image is not None and not isValidImage:
+    st.caption("**Warning:** For better performance, please upload an image that will not exceed a resolution of **2160x2160**.")
+
+# if there is an uploaded image, show next steps
+if isValidImage:
     # just a preview of the uploaded image
     home_page.markdown("""
         #### Uploaded Image
@@ -92,12 +116,18 @@ if uploaded_image is not None:
 
     # just some more notes for the user
     with home_page.expander("🤔 What are these animation styles?", expanded=False):
-        st.write("""
+        st.markdown("""
             These styles were derived from the works of various directors! Some of these might be familiar to you:   
             * Satoshi Kon: **Paprika**
             * Makoto **Shinkai**: Your Name, 5 Centimeters per Second, Weathering with You
             * **Hayao** Miyazaki: Spirited Away, My Neighbor Totoro, Princess Mononoke
         """)
+        st.write("---")
+        st.markdown("""
+            🔍 Here are some sample images for you:
+        """)
+
+        st.image(Image.open('images/sample.png'), caption="Image from https://github.com/TachibanaYoshino/AnimeGAN")
 
     home_page.write("---")
     
