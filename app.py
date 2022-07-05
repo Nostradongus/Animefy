@@ -216,6 +216,6 @@ if isValidImage:
 
         with col4:
             # download button
-            st.download_button('Download Image!', byte_encode, 'output.jpg', 'jpg')
+            st.download_button('Download Image', byte_encode, 'output.jpg', 'jpg')
 
         st.write("---")
