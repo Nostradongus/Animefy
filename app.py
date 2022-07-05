@@ -46,6 +46,12 @@ def tryNewStyle ():
     # if another_style_btn:
     page_container.empty()
 
+# callback when user downloads image
+def downloadImage ():
+    page_container.empty()
+
+    tryNewImage()
+
 # SOME INITIAL SETUP
 # To hide some default streamlit components and to add some customizations
 hide_streamlit = """
@@ -234,6 +240,6 @@ if isValidImage:
 
         with col4:
             # download button
-            st.download_button('Download Image', byte_encode, 'output.jpg', 'jpg')
+            st.download_button('Download Image', byte_encode, 'output.jpg', 'jpg', on_click=downloadImage)
 
         # st.write("---")
