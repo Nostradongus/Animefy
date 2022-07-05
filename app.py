@@ -77,7 +77,7 @@ if 'uploader_key' not in st.session_state:
 # FRONTEND PROPER
 # home page title and caption
 st.markdown("""
-    # 📸 Animefy
+    # ✨ Animefy ✨
 
     Convert your photos into **anime** with _ease_ using **AnimeGAN**.
 """)
