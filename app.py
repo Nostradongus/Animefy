@@ -38,7 +38,7 @@ def imageResCheck (image):
 
     image_height, image_width = image.shape[:2]
 
-    if (image_height <= 2160 and image_width < 2160):
+    if (image_height <= 2160 and image_width <= 2160):
         return True
     else:
         return False
@@ -49,7 +49,7 @@ if 'uploader_key' not in st.session_state:
 
 # home page title and caption
 st.markdown("""
-    # 📸 Animefy
+    # ✨ Animefy ✨
 
     Convert your photos into **anime** with _ease_ using **AnimeGAN**.
 """)
