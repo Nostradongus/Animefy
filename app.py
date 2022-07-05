@@ -11,12 +11,43 @@ import style
 # utils.py
 from utils import *
 
+# tab customization
 st.set_page_config(page_title="Animefy", page_icon="images/animefy_logo.png")
 
-model_lock = threading.Lock()
 
-# remove "Made with Streamlit" footer text
-# uncomment "#MainMenu {visibility: hidden;}" to also remove the default Streamlit hamburger menu
+# SOME HELPER FUNCTIONS
+# image resolution checking
+def imageResCheck (image):
+    # load and preprocess input image as a NumPy array
+    image = np.asarray(load_input_image(image))
+
+    image_height, image_width = image.shape[:2]
+
+    if (image_height <= 2160 and image_width <= 2160):
+        return True
+    else:
+        return False
+
+# callback when user wants to try another image
+def tryNewImage ():
+    # to ensure that the new id is unique
+    # -> to ensure that the file uploader will reset
+    while True:
+        # randomizer. work around for resetting file uploader
+        rand_id = str(randint(1000, 100000000))
+
+        if rand_id is not st.session_state['uploader_key']:
+            page_container.empty()
+            st.session_state['uploader_key'] = rand_id
+            break
+
+# callback when user wants to try another style
+def tryNewStyle ():
+    # if another_style_btn:
+    page_container.empty()
+
+# SOME INITIAL SETUP
+# To hide some default streamlit components and to add some customizations
 hide_streamlit = """
 <style>
     #MainMenu {
@@ -28,25 +59,22 @@ hide_streamlit = """
     header {
         visibility: hidden;
     }
+    button[title='View fullscreen'] {
+        visibility: hidden;
+    }
+    .appview-container {
+        background-image: url("https://drive.google.com/uc?export=view&id=1HbgExEyTd8r6kWhe7JYgihnsXXtZ0Lmm");
+        background-size: cover;
+    }
 </style>
 """
 st.markdown(hide_streamlit, unsafe_allow_html=True)
-
-def imageResCheck (image):
-    # load and preprocess input image as a NumPy array
-    image = np.asarray(load_input_image(image))
-
-    image_height, image_width = image.shape[:2]
-
-    if (image_height <= 2160 and image_width < 2160):
-        return True
-    else:
-        return False
 
 # randomizer. a workaround for clearing the contents of the file_uploader
 if 'uploader_key' not in st.session_state:
     st.session_state['uploader_key'] = str(randint(1000, 100000000))
 
+# FRONTEND PROPER
 # home page title and caption
 st.markdown("""
     # 📸 Animefy
@@ -62,16 +90,17 @@ page_container = st.empty()
 # store home page contents inside page_container
 home_page = page_container.container()
 
-# step #1
+# STEP #1
 home_page.markdown("""
     ### Step #1: Upload the photo that you would like to process!
 """)
 
-# just some notes for the user
+# just some notes for the user in uploading images
 with home_page.expander("📣 Here are some things to take note of...", expanded=True):
     st.write("""    
         * Do note that AnimeGAN works best with images containing **sceneries without people**. 
         * For best results, use images that **do not** contain human subjects.
+        * Due to performance concerns, please upload images that would not exceed a **2160x2160** resolution.
         * Fore more information on AnimeGAN, click [here](https://github.com/TachibanaYoshino/AnimeGAN).
     """)
 
@@ -87,7 +116,7 @@ if uploaded_image is not None:
 else:
     isValidImage = False
 
-# warning
+# warning if uploaded image has an invalid resolution
 if uploaded_image is not None and not isValidImage:
     st.caption("**Warning:** For better performance, please upload an image that will not exceed a resolution of **2160x2160**.")
 
@@ -103,7 +132,7 @@ if isValidImage:
 
     home_page.write("---")
 
-    # step #2
+    # STEP #2
     home_page.markdown("""
         ### Step #2: Now, select your preferred animation style!
     """)
@@ -114,7 +143,7 @@ if isValidImage:
             ('Paprika', 'Shinkai', 'Hayao')
         )
 
-    # just some more notes for the user
+    # just some more notes for the user regarding the animation styles
     with home_page.expander("🤔 What are these animation styles?", expanded=False):
         st.markdown("""
             These styles were derived from the works of various directors! Some of these might be familiar to you:   
@@ -123,6 +152,8 @@ if isValidImage:
             * **Hayao** Miyazaki: Spirited Away, My Neighbor Totoro, Princess Mononoke
         """)
         st.write("---")
+
+        # example images
         st.markdown("""
             🔍 Here are some sample images for you:
         """)
@@ -133,6 +164,7 @@ if isValidImage:
     
     # stylize image
     home_page.markdown("If you're all set, then let's proceed! 😄")
+    
     stylize_btn = home_page.button("Stylize!")
 
     # if "stylize" button is clicked,
@@ -140,14 +172,10 @@ if isValidImage:
         # remove processing page contents
         page_container.empty()
 
-        with st.spinner('Hold on... Please do not close this tab....'):
-            model_lock.acquire()
-
         # spinner (while processing image)
         with st.spinner('Hold on... Processing your image...'):
             # stylize input image and produce output
             output_image = style.stylize(anime_style, uploaded_image)
-            model_lock.release()
 
         # step #3
         st.markdown("""
@@ -174,27 +202,20 @@ if isValidImage:
             # clamp and channels are used since OpenCV was used in processing the image
             st.image(output_image, clamp=True, channels='RGB')
 
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2, col3, col4 = st.columns([1, 3, 3, 3])
 
         with col1:
             pass
         with col2:
-            # retry message
-            # st.markdown('Not satisfied? Click this to retry!')
-            # retry button
-            retry_btn = st.button("Try another image")
+            # try another image
+            retry_btn = st.button("New Image", on_click=tryNewImage)
 
-            if retry_btn:
-                page_container.empty()
         with col3:
-            # some instruction for downloading
-            # st.write("Finally, just download your _anime-fied_ image!")
-            # download button
-            st.download_button('Download Image', byte_encode, 'output.jpg', 'jpg')
+            # try another style button
+            another_style_btn = st.button("Change Style", on_click=tryNewStyle)
+
         with col4:
-            pass
+            # download button
+            st.download_button('Download Image!', byte_encode, 'output.jpg', 'jpg')
 
         st.write("---")
-        
-        # randomizer. just another workaround.
-        st.session_state['uploader_key'] = str(randint(1000, 100000000))
